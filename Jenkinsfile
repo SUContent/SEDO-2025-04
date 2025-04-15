@@ -1,15 +1,6 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Check Files') {
-            steps {
-                bat 'echo Current folder: %cd%'
-                bat 'dir'
-                bat 'dir /s *.csproj'
-            }
-        }
-
         stage('Restore dependencies') {
             steps {
                 bat 'dotnet restore'
@@ -24,7 +15,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'dotnet test HouseRentingSystem.Tests/HouseRentingSystem.Tests.csproj --no-build --verbosity normal'
+                bat 'dotnet test --no-build --verbosity normal'
             }
         }
     }
