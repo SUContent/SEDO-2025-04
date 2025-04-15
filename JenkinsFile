@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    triggers {
+        pollSCM('* * * * *') // Poll every minute for example (customize as needed)
+    }
+
+    environment {
+        DOTNET_VERSION = '6.0.x'
+    }
+
+    stages {
+
+        stage('Restore Dependencies') {
+            steps {
+                bat '$HOME/.dotnet/dotnet restore'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat '$HOME/.dotnet/dotnet build --no-restore'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                bat '$HOME/.dotnet/dotnet test --no-build --verbosity normal'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished.'
+        }
+    }
+}
