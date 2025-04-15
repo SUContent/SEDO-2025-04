@@ -2,10 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Check Files') {
             steps {
-                checkout scm
-                bat 'dir' 
+                bat 'echo Current folder: %cd%'
+                bat 'dir'
+                bat 'dir /s *.csproj'
             }
         }
 
@@ -23,21 +24,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'dotnet test --no-build --verbosity normal'
+                bat 'dotnet test HouseRentingSystem.Tests/HouseRentingSystem.Tests.csproj --no-build --verbosity normal'
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning workspace...'
-            deleteDir()
-        }
-        success {
-            echo 'Tests ran successfully!'
-        }
-        failure {
-            echo 'Something went wrong. Check the console output.'
         }
     }
 }
