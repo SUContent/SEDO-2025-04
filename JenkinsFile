@@ -1,14 +1,6 @@
 pipeline {
     agent any
 
-    triggers {
-        pollSCM('* * * * *') // Poll every minute for example (customize as needed)
-    }
-
-    environment {
-        DOTNET_VERSION = '6.0.x'
-    }
-
     stages {
 
         stage('Restore Dependencies') {
@@ -27,12 +19,6 @@ pipeline {
             steps {
                 bat 'dotnet test --no-build --verbosity normal'
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline finished.'
         }
     }
 }
